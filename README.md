@@ -29,5 +29,13 @@ A Perl module to print out recieved PelcoD commands to aid in troubleshooting
          }
 
 # DESCRIPTION
-       Supports both a serial or network connection to a PelcoD Controller. The network connection works with say a serial/network
-       device like the Moxa set in TCP server mode.
+       Supports both a serial or network connection to a PelcoD Controller. The network 
+       connection works with say a serial/network device like the Moxa set in TCP server mode.
+
+# INSTALL
+
+      Download zip file, unzip and then usual Perl module install  
+      
+      * perl Makefile.PL 
+      * make 
+      * make install  

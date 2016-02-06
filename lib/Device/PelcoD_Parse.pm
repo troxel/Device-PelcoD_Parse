@@ -255,9 +255,7 @@ __END__
 
 =head1 NAME
 
-Device::PelcoD_Parse - Perl extension for blah blah blah
-
-A module to print out recieved PelcoD commands to aid in troubleshooting
+Device::PelcoD_Parse - A module to print out recieved PelcoD commands to aid in troubleshooting
 
 =head1 SYNOPSIS
 
@@ -293,14 +291,7 @@ connection works with say a serial/network device like the Moxa set in TCP serve
 
 =head1 SEE ALSO
 
-Mention other useful documentation such as the documentation of
-related modules or operating system documentation (such as man pages
-in UNIX), or any relevant external documentation such as RFCs or
-standards.
-
-If you have a mailing list set up for your module, mention it here.
-
-If you have a web site set up for your module, mention it here.
+Some code borrowed from Zonemaster 
 
 =head1 AUTHOR
 

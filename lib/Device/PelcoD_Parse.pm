@@ -210,6 +210,30 @@ sub get_cmd_socket_buffer
 }	
 
 # -----------------------------------------
+sub get_cmd_socket_exp
+{
+   my $self = shift;
+
+   my @rx_msg_cmd;
+   my $inx=0;
+
+   my $rx_msg_byte;
+    my $rx_msg;
+    while(1)
+    {
+            $self->{socket_obj}->recv($rx_msg_byte,1);
+            $rx_msg = unpack "C", $rx_msg_byte;
+            if ( $rx_msg == 0xFF ) { last; }
+            else                   { printf "looking for sync %X", $rx_msg; }
+   }
+
+   $self->{socket_obj}->recv($rx_msg_byte,6);
+   my @rx_msg = unpack "C*", $rx_msg_byte;
+
+   return \@rx_msg;
+}
+
+# -----------------------------------------
 sub get_cmd_socket
 {
   my $self = shift;
@@ -247,6 +271,24 @@ sub print_bin
   
   print "\n"; 
 } 	
+
+# -----------------------------------------
+sub print_hex
+{
+  my $self = shift;
+  my $cmd_ref = shift;
+
+  unless ( @$cmd_ref ) { return }
+
+  print "$cmd_ref->[0] ";
+  shift @{$cmd_ref};
+
+  foreach my $char ( @{$cmd_ref} )
+  {
+	 printf "\t%X", $char;
+  }
+  print "\n";
+}
 
 1;
 

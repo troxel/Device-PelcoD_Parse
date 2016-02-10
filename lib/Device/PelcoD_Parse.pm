@@ -210,7 +210,7 @@ sub get_cmd_socket_buffer
 }	
 
 # -----------------------------------------
-sub get_cmd_socket_exp
+sub get_cmd_socket
 {
    my $self = shift;
 
@@ -231,28 +231,6 @@ sub get_cmd_socket_exp
    my @rx_msg = unpack "C*", $rx_msg_byte;
 
    return \@rx_msg;
-}
-
-# -----------------------------------------
-sub get_cmd_socket
-{
-  my $self = shift;
-
-  my @rx_msg_cmd;
-  while(1)
-  {
-    my $rx_msg_byte;
-    $self->{socket_obj}->recv($rx_msg_byte,1);
-
-    if ( $rx_msg_byte eq '' ) { next; }
-
-    my $rx_msg = unpack "C*", $rx_msg_byte;
-
-    if ( $rx_msg == 0xFF ) { last; }
-    push @rx_msg_cmd, $rx_msg;
-  }
-
-  return \@rx_msg_cmd;
 }
 
 # -----------------------------------------
@@ -301,29 +279,47 @@ Device::PelcoD_Parse - A module to print out recieved PelcoD commands to aid in 
 
 =head1 SYNOPSIS
 
-  use Device::PelcoD_Parse;
- 
-  my $pelco = new Device::PelcoD_Parse ( );
-  
-  # Serial mode 
-  $pelco->open_serial( {'port'=>'/dev/ttyr0e'} );
-   
-  or 
-  
-  # Network mode 
-  my $args={};
-  $args->{ip} = '192.168.254.30';
-  $args->{port} = 4001;
-  $pelco->open_socket( $args );
+      use Device::PelcoD_Parse;
 
-  while(1)
-  {
-    my $rtn = $pelco->get_cmd();
-    my $rtn = $pelco->get_cmd_socket();
+      my $pelco = new Device::PelcoD_Parse ( );
 
-    $pelco->print_bin($rtn);
-  }
+      # Network mode
+      my $args={};
+      $args->{ip} = '192.168.254.30';
+      $args->{port} = 4001;
+      $pelco->open_socket( $args );
 
+      while(1)
+      {
+           my $rtn = $pelco->get_cmd_socket();
+
+           $pelco->print_bin($rtn);
+           # Prints the Pelco ID and 5 command and data words ... 
+           # 1       00000000        00000010        00010001        00000000        00010100
+           # 1       00000000        00100010        00101101        00000000        01010000
+           # 1       00000000        00000000        00000000        00000000        00000001
+           # 1       00000000        00010100        00111111        00000100        01011000
+            
+           #$pelco->print_hex($rtn);
+           # Prints the Pelco ID and 5 command and data words ... 
+           # 1       0       4       8       0       D
+           # 1       0       0       0       0       1
+           # 1       0       0       0       0       1
+           # 1       0       2       9       0       C
+           # 1       0       0       0       0       1
+      }
+
+      # ------------------------------------------------------------------
+
+      # Or Serial mode
+      $pelco->open_serial( {'port'=>'/dev/ttyr0e'} );
+
+      while(1)
+      {
+           my $rtn = $pelco->get_cmd_socket();
+           $pelco->print_bin($rtn);
+      }
+         
 
 =head1 DESCRIPTION
 

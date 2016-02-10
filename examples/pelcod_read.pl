@@ -10,6 +10,7 @@ my $pelco = new Device::PelcoD_Parse ( );
 
 my $args={};
 $args->{ip} = '192.168.254.30';
+$args->{ip} = '130.46.82.64';
 $args->{port} = 4001;
 $pelco->open_socket( $args );
 
